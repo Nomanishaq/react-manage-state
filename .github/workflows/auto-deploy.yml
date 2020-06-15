@@ -1,10 +1,13 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Deploy Website
+name: CI
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
-on: [push]
+on:
+  push:
+    branches: [ master ]
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -17,17 +20,15 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    - name: Install Node.js
-      uses: actions/setup-node@v2-beta
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v1.4.2
       with:
-        node-version: 12
+        version: 12
 
-    - name: Prepare for Yarn Installation
-      run: curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-      
-    - name: react-scripts build
-      run: sudo apt update && sudo apt install yarn 
-
+    - name: Github Action for yarn 
+      uses: Borales/actions-yarn@v2.3.0
+      with: 
+        cmd: install
 
     - name: Creating Build
       run: yarn build
@@ -36,6 +37,6 @@ jobs:
       run: npm install -g surge
 
     - name: deploying on surge
-      run: surge ./build http://manage-state.surge.sh --token ${{ secrets.Token }}
+      run: surge ./build http://manage-state.surge.sh -- token ${{ secrets.SURGE_TOKEN }}
 
 

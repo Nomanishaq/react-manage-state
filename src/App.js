@@ -4,7 +4,7 @@ import Messgae from './message.js';
 
 function App() {
 
-  let [count,setCount] = useState(1);
+  let [count,setCount] = useState(0);
   let [isMorning,setMorning] = useState(true);
   return (
     <div className={`box ${isMorning ? 'morning' : ''} `}>

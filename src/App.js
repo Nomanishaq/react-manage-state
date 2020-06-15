@@ -8,6 +8,7 @@ function App() {
   let [isMorning,setMorning] = useState(true);
   return (
     <div className={`box ${isMorning ? 'morning' : ''} `}>
+      <h1>React App </h1>
   <h1>Good {isMorning ? 'Morning' : 'Night'}</h1>
   <Messgae counter={count}/>
   <button onClick={()=> setMorning(!isMorning)}>{`${isMorning ? 'Click here Change to Night' : 'Click here Change to Day'}`}</button>

@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Deploy Website
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -25,10 +25,12 @@ jobs:
       with:
         version: 12
 
-    - name: Github Action for yarn 
-      uses: Borales/actions-yarn@v2.3.0
-      with: 
-        cmd: install
+    - name: Prepare for Yarn Installation
+      run: curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+      
+    - name: install yarn
+      run: sudo apt update && sudo apt install yarn 
+
 
     - name: Creating Build
       run: yarn build
@@ -37,6 +39,6 @@ jobs:
       run: npm install -g surge
 
     - name: deploying on surge
-      run: surge ./build http://manage-state.surge.sh -- token ${{ secrets.SURGE_TOKEN }}
+      run: surge ./build http://manage-state.surge.sh --token ${{ secrets.SURGE_TOKEN }}
 
 
